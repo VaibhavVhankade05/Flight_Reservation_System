@@ -12,7 +12,7 @@ import com.skylink.service.UserService;
 //import com.skylink.serviceimplementation.UserImplementation;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController 
 {
 	@Autowired
@@ -22,6 +22,7 @@ public class UserController
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
         User registeredUser = userService.registerUser(user);
+        System.out.println("redfghjk");
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
     

@@ -14,10 +14,13 @@ public class Booking
 	private long id;
 	
 	@ManyToOne
+	@JoinColumn(name = "userId", nullable = false)
     private User user;
 	
     @ManyToOne
+    @JoinColumn(name = "flightId", nullable = false)
     private Flight flight;
+    
     
     private Date bookingDate;
     
