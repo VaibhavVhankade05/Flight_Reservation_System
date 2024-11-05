@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,9 @@ public class BookingController
 	
 	@Autowired
     private BookingService bookingService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
     // Create a new booking
     @PostMapping("/create")
@@ -49,14 +53,14 @@ public class BookingController
     }
 
     // Update a booking
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking bookingDetails) {
         Booking updatedBooking = bookingService.updateBooking(id, bookingDetails);
         return new ResponseEntity<>(updatedBooking, HttpStatus.OK);
     }
 
     // Delete a booking
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

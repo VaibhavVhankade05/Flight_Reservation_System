@@ -18,6 +18,8 @@ public class UserImplementation implements UserService
 {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	
@@ -61,15 +63,19 @@ public class UserImplementation implements UserService
 	
 // Update By Id
 	@Override
-	public User updateUser(Long id, User userdetails) 
+	public User updateUser(Long id, User userDetails) 
 	{
-		return userRepository.findById(id).map(user -> 
-		{
-			user.setName(userdetails.getName());
-			user.setEmail(userdetails.getEmail());
-			user.setPassword(userdetails.getPassword());
-			return userRepository.save(user);
-		}).orElseThrow(() -> new RuntimeException("Student Not Found" + id));
+		return userRepository.findById(id).map(user -> {
+            user.setName(userDetails.getName());
+            user.setEmail(userDetails.getEmail());
+
+            // Only update password if it's different from the current one
+            if (!user.getPassword().equals(userDetails.getPassword())) {
+                user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+            }
+
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User Not Found: " + id));
 	}
 	
 	
